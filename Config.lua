@@ -6,8 +6,12 @@ Giants = GetCurrentResourceName()
 Config.base = 'limit' -- limit
 Config.Namebase = 'esx' -- framework or esx
 
-Config['สีหลักเข้มเมนู'] = 'background-color: #1A374D;'
-Config['สีหลักอ่อน'] = 'background-color:rgba(64, 104, 130, 0.8);'
+
+Config['UITHEME'] = {
+	main = 'background-color: #ed7b99;',
+	semi = 'background-color:rgba(0, 0, 0, 0.8);box-shadow: 0px 0px 15px 1px #f3a8bc;',
+	boxbg = 'background-color:rgba(255, 141, 199, 0.8)',
+}
 -- discordlog
 Config.WebhookOn = true
 Config.Webhook = 'https://discord.com/api/webhooks/1029929760022855701/Pgf8Lt718HpVEkpV0vLbZ6KfowwLlxpd4mkdKVxRUZE3qu0WQMjeERrTke8xZy7e8Cde'
@@ -25,17 +29,13 @@ Config['itemvip'] = {
 }
 
 
-Config.limitAnimal = 5 -- จำนวนสัตว์ / รวมไม่เกินนี้
+Config.limitAnimal = 20 -- จำนวนสัตว์ / รวมไม่เกินนี้
 Config.showanimal = false -- โชว์สัตว์ให้ทุกคนในประเทศเห็น  จะแลคถ้าคนสเปคต่ำ
 Config.deleteOutZone = false -- ลบ object / ped หรือไม่ถ้าออกนอกเขต 
 -----------------------------------------------------
-Config['เวลาเริ่มเลี้ยง'] = 100
-Config['เวลาให้อาหาร'] = 100
-Config['เวลาเก็บผลผลิต'] = 100
-Config['เวลาลบข้อมูล'] = 100
+
 
 Config.Feed = {
-	
 	{
 		name = 'เลี้ยงวัว 10 นาที',  -- ห้ามซ้ำกัน 
 		job = {'unemployed'}, -- ่job ที่สามารถทำงานนี้ได้ / ถ้าจะอนุญาตทุก job ใส่ {} แบบนี้
@@ -76,9 +76,9 @@ Config.Feed = {
             Text2 = '<font face="font4thai"> ~y~ จุดเลี้ยงวัว 10 นาที Limit 3</font>', -- text บนหัว npc 
             -- Text3 = '<font face="font4thai">กด [ ~g~E~w~ ] เพื่อเปิดเมนู </font>', -- text บนหัว npc 
         },
-		percent_feed = {50}, -- จะให้อาหารได้ตอนกี่เปอ ตัวอย่างเช่น ให้อาหารตอน 20% - 40 % - 80 % ใส่ {20,40,80}
+		percent_feed = {}, -- จะให้อาหารได้ตอนกี่เปอ ตัวอย่างเช่น ให้อาหารตอน 20% - 40 % - 80 % ใส่ {20,40,80}
 		need = 5, --การเจริญเติบโตมากกว่าเท่านี้ถึงจะสุ่มให้อาหาร
-		time_need = 10,  -- โตเต็มไว ภายในกี่วิตาย
+		time_need = 3,  -- โตเต็มไว ภายในกี่วิตาย
 		cool = 60, -- ให้อาหารภายในกี่วิ ก่อนสัตว์ตาย
 		blips = {
 			enabled = false,
@@ -89,8 +89,8 @@ Config.Feed = {
 		},
 		vip = { limit = 7 },
 		item = {
-			use = "water",
-			feed = "water",
+			use = {item = "water", name = "ลูกวัว", count = 1},
+			feed = {item = "water", name = "ลูกวัว", count = 1},
 		},
 		giveitem = {item = "money", count = {2200,2400}}, -- only one  -- สามารถ ตั้งให้เงินได้เลยถ้าเลี้ยงเสร็จ item = "money" or black_money
 		bonusitem = {
@@ -99,25 +99,12 @@ Config.Feed = {
 			-- {item = "water", count = {1,1}, percent = 50.0}, -- สามารถ ตั้งให้เงินได้เลยถ้าเลี้ยงเสร็จ item = "money" or black_money
 			-- {item = "black_money", count = {1000,1800}, percent = 40.0}, -- สามารถ ตั้งให้เงินได้เลยถ้าเลี้ยงเสร็จ item = "money" or black_money
 		},
-		feed = {
-			enabled = true,
-			list = {
-				{item = "water", count = 1, percent = 100},
-			},
-		},
+		
 	},
 	
 	
 }
 
-Config.Setting = {
-	marker = {
-		intensive = 70,
-		normal = {r = 0, g = 255, b = 85},
-		feed = {r = 255, g = 247, b = 0},
-		kill = {r = 255, g = 0, b = 0},
-	},
-}
 
 -- function นี้จะเรียกใช้งานหลังจากเก็บสัตว์เลี้ยงเสร็จแล้ว สามารถนำ export funxtion update quest ต่างๆมาใส่ได้
 -- สิ่งที่ส่งมาด้วย source, itemname , itemcount
@@ -207,7 +194,6 @@ function nohaveFood()
 end
 
 function notinZone()
-	-- body
 	pcall(function()
 		exports.pNotify:SendNotification({text = "คุณไม่ได้อยู่ในโซนเลี้ยงสัตว์!!", timeout = 5000})
 	end)
